@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           home: MyHomePage(),
         ));
   }
-} 
+}
 
 class MyHomePage extends StatelessWidget {
   @override
@@ -35,34 +35,36 @@ class MyHomePage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) => _ViewModel.create(store),
-        builder: (BuildContext context, _ViewModel viewModel) => Column(
-          children: <Widget>[
-            AddItemWidget(viewModel),
-            Expanded(child: ItemListWidget(viewModel)),
-            RemoveItemsButton(viewModel),
-          ],
-        )
-      ),
+          converter: (Store<AppState> store) => _ViewModel.create(store),
+          builder: (BuildContext context, _ViewModel viewModel) => Column(
+                children: <Widget>[
+                  AddItemWidget(viewModel),
+                  Expanded(child: ItemListWidget(viewModel)),
+                  RemoveItemsButton(viewModel),
+                ],
+              )),
     );
   }
 }
+
 class RemoveItemsButton extends StatelessWidget {
   final _ViewModel model;
 
   RemoveItemsButton(this.model);
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      child: Text('Delete all Items'),
-      onPressed: () => model.onRemoveItems(),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20.0),
+      child: RaisedButton(
+        child: Text('Delete all Items'),
+        onPressed: () => model.onRemoveItems(),
+      ),
     );
   }
 }
 
 class ItemListWidget extends StatefulWidget {
   final _ViewModel model;
-
 
   ItemListWidget(this.model);
 
@@ -71,11 +73,9 @@ class ItemListWidget extends StatefulWidget {
 }
 
 class _ItemListWidgetState extends State<ItemListWidget> {
- 
-
   @override
   Widget build(BuildContext context) {
-      Color getColor(Set<MaterialState> states) {
+    Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
         MaterialState.hovered,
@@ -86,39 +86,49 @@ class _ItemListWidgetState extends State<ItemListWidget> {
       }
       return Colors.red;
     }
+
     return ListView(
-      children: widget.model.items.map((Item item) => ListTile(
-        title: Text(item.body, style: TextStyle(color: Colors.black, decoration: item.isChecked ? TextDecoration.lineThrough : TextDecoration.none),),
-        leading: Checkbox(
-      fillColor: MaterialStateProperty.resolveWith(getColor),
-      checkColor: Colors.white,
-      value: item.isChecked,
-      onChanged: (bool value) {
-        setState(() {
-          item.isChecked = value;
-        });
-      },
-    ),
-        trailing: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.delete),
-          onPressed: () => widget.model.onRemoveItem(item),
-        ),
-      )).toList(),
+      children: widget.model.items
+          .map((Item item) => ListTile(
+                title: Text(
+                  item.body,
+                  style: TextStyle(
+                      color: Colors.black,
+                      decoration: item.isChecked
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
+                ),
+                leading: Checkbox(
+                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                  checkColor: Colors.white,
+                  value: item.isChecked,
+                  onChanged: (bool value) {
+                    setState(() {
+                      item.isChecked = value;
+                    });
+                  },
+                ),
+                trailing: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.delete),
+                  onPressed: () => widget.model.onRemoveItem(item),
+                ),
+              ))
+          .toList(),
     );
   }
 }
 
-class AddItemWidget extends StatefulWidget{
+class AddItemWidget extends StatefulWidget {
   final _ViewModel model;
-  
+
   AddItemWidget(this.model);
 
   @override
   State<StatefulWidget> createState() => _AddItemState();
 }
 
-class _AddItemState extends State<AddItemWidget>{
+class _AddItemState extends State<AddItemWidget> {
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -129,10 +139,9 @@ class _AddItemState extends State<AddItemWidget>{
         controller: controller,
         style: TextStyle(color: Colors.black),
         decoration: InputDecoration(
-          hintText: 'Add an Item',
-          hintStyle: TextStyle(color: Colors.black38)
-        ),
-        onSubmitted: (String s){
+            hintText: 'Add an Item',
+            hintStyle: TextStyle(color: Colors.black38)),
+        onSubmitted: (String s) {
           widget.model.onAddItem(s);
           controller.text = '';
         },
@@ -141,32 +150,28 @@ class _AddItemState extends State<AddItemWidget>{
   }
 }
 
-
-class _ViewModel{
+class _ViewModel {
   final List<Item> items;
   final Function(String) onAddItem;
   final Function(Item) onRemoveItem;
   final Function() onRemoveItems;
 
-  _ViewModel({
-    this.items,
-    this.onAddItem,
-    this.onRemoveItem,
-    this.onRemoveItems
-  });
+  _ViewModel(
+      {this.items, this.onAddItem, this.onRemoveItem, this.onRemoveItems});
 
-  factory _ViewModel.create(Store<AppState> store){
-    _onAddItem(String body){
+  factory _ViewModel.create(Store<AppState> store) {
+    _onAddItem(String body) {
       store.dispatch(AddItemAction(body));
     }
 
-    _onRemoveItem(Item item){
+    _onRemoveItem(Item item) {
       store.dispatch(RemoveItemAction(item));
     }
 
-    _onRemoveItems(){
+    _onRemoveItems() {
       store.dispatch(RemoveItemsAction());
     }
+
     return _ViewModel(
       items: store.state.items,
       onAddItem: _onAddItem,
@@ -174,5 +179,4 @@ class _ViewModel{
       onRemoveItems: _onRemoveItems,
     );
   }
-  
 }

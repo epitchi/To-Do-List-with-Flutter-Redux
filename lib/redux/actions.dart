@@ -5,7 +5,7 @@ class AddItemAction {
   final String item;
   static bool isChecked;
 
-  AddItemAction(this.item){
+  AddItemAction(this.item) {
     _id++;
     isChecked = false;
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Item{
+class Item {
   final int id;
   final String body;
   bool isChecked;
@@ -11,7 +11,7 @@ class Item{
     @required this.isChecked,
   });
 
-  Item copyWith({int id, String body}){
+  Item copyWith({int id, String body}) {
     return Item(
       id: id ?? this.id,
       body: body ?? this.body,
@@ -20,7 +20,7 @@ class Item{
   }
 }
 
-class AppState{
+class AppState {
   final List<Item> items;
   AppState({
     @required this.items,
