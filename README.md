@@ -1,16 +1,8 @@
-# redux_items
+# To Do List - Flutter Redux
 
-A new Flutter project.
+Project này viết về To do list sử dụng ngôn ngữ .dart được phát triển bởi Google.
+Dart được sử dụng để xây dựng các loại ứng dụng: web, server, di động (IOS và Android với công cụ Flutter). 
+Kết hợp framework Redux.
+Với Project này bạn có thể sử dụng trên Web với đường dẫn: web/index.html.
+Còn với app Android là: build/app/outputs/apk/release/app-release.apk
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
